@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: rgba(255, 255, 255, 0.87);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  overflow: hidden;
+}
+
+.main-content {
+  height: calc(100vh - 64px - 88px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.main-content::-webkit-scrollbar-button {
+  display: none;
+}
+
+.main-content::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 0;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+  background: #d97706;
+  border-radius: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin: 0;
+  border: none;
+}
+
+.main-content:hover::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+  background: #b45309;
+}
+
+.main-content::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.main-content:not(:hover)::-webkit-scrollbar-thumb {
+  opacity: 0;
+}
+
+.main-content:hover::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb:active {
+  opacity: 1;
+}
