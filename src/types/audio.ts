@@ -1,10 +1,45 @@
 import { Howl } from 'howler';
 
+export interface Artist {
+  id: string;
+  name: string;
+  bio: string | null;
+  img: string | null;
+}
+
+export interface Album {
+  id: string;
+  name: string;
+  img: string | null;
+  releaseDate: Date;
+  artist: Artist;
+}
+
+export interface Track {
+  id: string;
+  name: string;
+  artist: Artist;
+  releaseDate: Date;
+  album: Album | null;
+  img: string | null;
+  src: string;
+  duration?: number;
+}
+
+export interface Playlist {
+  id: string;
+  tracks: Track[];
+  img: string | null;
+  name: string;
+  creationDate: Date;
+}
+
 export interface SongStore {
   sound: Howl | null;
+  currentTrack: Track | null;
   seek: (newSeek: number) => void;
   currentSeek: number;
-  play: () => void;
+  play: (track?: Track) => void;
   pause: () => void;
   stop: () => void;
   rate: (newRate: number) => void;
@@ -15,9 +50,12 @@ export interface SongStore {
   duration: number;
   isDragging: boolean;
   setDragging: (dragging: boolean) => void;
+  isLoading?: boolean; // Added loading state
+  error?: string | null; // Added error state
 }
 
 export interface AudioPlayerProps {
+  track?: Track;
   className?: string;
 }
 
