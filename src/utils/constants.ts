@@ -3,14 +3,14 @@ import type { NavigationLink } from '@/types/navigation';
 export const NAVIGATION_LINKS: NavigationLink[] = [
   { href: '/', label: 'Home' },
   { href: '/artists', label: 'Artists' },
-  { href: '/songs', label: 'Songs' },
+  { href: '/tracks', label: 'Tracks' },
 ];
 
 export const AUDIO_CONFIG = {
   DEFAULT_VOLUME: 0.5,
   DEFAULT_RATE: 1,
   SEEK_STEP: 0.01,
-  VOLUME_STEP: 0.001,
+  VOLUME_STEP: 0.01,
   VOLUME_HIDE_DELAY: 100,
 } as const;
 
