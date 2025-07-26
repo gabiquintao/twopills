@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { Howl } from 'howler';
-import type { SongStore } from '@/types/audio';
-import { AUDIO_CONFIG, DEMO_TRACK } from '@/utils/constants';
+import type { SongStore, Track } from '@/types/audio';
+import { AUDIO_CONFIG } from '@/utils/constants';
 
 export const useSongStore = create<SongStore>((set, get) => ({
+  currentTrack: null,
   sound: null,
   currentSeek: 0,
   currentRate: AUDIO_CONFIG.DEFAULT_RATE,
@@ -11,52 +12,95 @@ export const useSongStore = create<SongStore>((set, get) => ({
   isPlaying: false,
   duration: 0,
   isDragging: false,
+  isLoading: false,
+  error: null,
 
   setDragging: (dragging: boolean) => {
     set({ isDragging: dragging });
   },
 
-  play: () => {
-    const currentSound = get().sound;
+  play: (track?: Track) => {
+    const state = get();
+    const trackToPlay = track || state.currentTrack;
 
-    if (!currentSound) {
+    if (!trackToPlay) {
+      console.warn('No track provided to play');
+      return;
+    }
+
+    if (!state.sound || state.currentTrack?.id !== trackToPlay.id) {
+      if (state.sound) {
+        state.sound.stop();
+        state.sound.unload();
+      }
+
+      set({ isLoading: true, error: null });
+
       const newSound = new Howl({
-        src: [DEMO_TRACK.src],
+        src: [trackToPlay.src],
         html5: true,
-        volume: get().currentVolume,
-        rate: get().currentRate,
+        volume: state.currentVolume,
+        rate: state.currentRate,
+        format: ['mp3'],
         onload: () => {
-          set({ duration: newSound.duration() });
+          console.log('Track loaded:', trackToPlay.name);
+          set({
+            duration: newSound.duration(),
+            isLoading: false,
+            error: null,
+          });
+        },
+        onloaderror: (error) => {
+          console.error('Failed to load track:', trackToPlay.name, error);
+          set({
+            isLoading: false,
+            error: `Failed to load: ${trackToPlay.name}`,
+          });
         },
         onplay: () => {
-          set({ isPlaying: true });
+          console.log('Playing:', trackToPlay.name);
+          set({ isPlaying: true, isLoading: false });
 
           const updatePosition = () => {
-            const state = get();
-            if (state.isPlaying && !state.isDragging) {
+            const currentState = get();
+            if (currentState.isPlaying && !currentState.isDragging) {
               const currentPos = newSound.seek();
               if (typeof currentPos === 'number') {
                 set({ currentSeek: currentPos });
               }
             }
-            if (state.isPlaying) {
+            if (currentState.isPlaying) {
               requestAnimationFrame(updatePosition);
             }
           };
           requestAnimationFrame(updatePosition);
+        },
+        onplayerror: (error) => {
+          console.error('Playback error:', error);
+          set({
+            isPlaying: false,
+            isLoading: false,
+            error: `Playback failed: ${trackToPlay.name}`,
+          });
         },
         onpause: () => {
           set({ isPlaying: false });
         },
         onend: () => {
           set({ isPlaying: false, currentSeek: 0 });
-          console.log('Finished!');
+          console.log('Track finished:', trackToPlay.name);
         },
       });
-      set({ sound: newSound });
+
+      set({
+        sound: newSound,
+        currentTrack: trackToPlay,
+        currentSeek: 0,
+      });
+
       newSound.play();
     } else {
-      currentSound.play();
+      state.sound.play();
     }
   },
 
