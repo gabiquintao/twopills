@@ -1,6 +1,5 @@
 import { useSongStore } from '@/stores/useSongStore';
 import { useSeekBar } from '@/hooks/useSeekBar';
-import { DEMO_TRACK } from '@/utils/constants';
 import type { AudioPlayerProps } from '@/types/audio';
 
 import SeekBar from './SeekBar';
@@ -8,7 +7,7 @@ import TrackInfo from './TrackInfo';
 import PlayButton from './PlayButton';
 import VolumeControl from './VolumeControl';
 
-const AudioPlayer = ({ className = '' }: AudioPlayerProps) => {
+const AudioPlayer = ({ className = '', track }: AudioPlayerProps) => {
   const {
     seek,
     play,
@@ -19,6 +18,7 @@ const AudioPlayer = ({ className = '' }: AudioPlayerProps) => {
     duration,
     isPlaying,
     setDragging,
+    currentTrack,
   } = useSongStore();
 
   const { localSeekValue, handleSeekChange, handleSeekStart, handleSeekEnd } =
@@ -33,9 +33,14 @@ const AudioPlayer = ({ className = '' }: AudioPlayerProps) => {
     if (isPlaying) {
       pause();
     } else {
-      play();
+      play(track);
     }
   };
+
+  const displayTrack = currentTrack;
+  const trackTitle = displayTrack?.name || '';
+  const trackArtist = displayTrack?.artist?.name || '';
+  const trackImg = displayTrack?.img || '';
 
   return (
     <div
@@ -53,7 +58,7 @@ const AudioPlayer = ({ className = '' }: AudioPlayerProps) => {
         />
 
         <div className="flex items-center justify-between">
-          <TrackInfo title={DEMO_TRACK.title} artist={DEMO_TRACK.artist} />
+          <TrackInfo title={trackTitle} img={trackImg} artist={trackArtist} />
 
           <div className="flex items-center space-x-4">
             <PlayButton isPlaying={isPlaying} onTogglePlay={togglePlay} />
