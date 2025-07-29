@@ -10,6 +10,7 @@ export const useSongStore = create<SongStore>((set, get) => ({
   currentRate: AUDIO_CONFIG.DEFAULT_RATE,
   currentVolume: AUDIO_CONFIG.DEFAULT_VOLUME,
   isPlaying: false,
+  isLooping: false,
   duration: 0,
   isDragging: false,
   isLoading: false,
@@ -102,6 +103,17 @@ export const useSongStore = create<SongStore>((set, get) => ({
     } else {
       state.sound.play();
     }
+  },
+
+  toggleLoop: () => {
+    const state = get();
+    const newLoopState = !state.isLooping;
+
+    if (state.sound) {
+      state.sound.loop(newLoopState);
+    }
+
+    set({ isLooping: newLoopState });
   },
 
   seek: (newSeek: number) => {

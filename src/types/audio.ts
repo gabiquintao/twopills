@@ -50,8 +50,10 @@ export interface SongStore {
   duration: number;
   isDragging: boolean;
   setDragging: (dragging: boolean) => void;
-  isLoading?: boolean; // Added loading state
-  error?: string | null; // Added error state
+  isLoading?: boolean;
+  isLooping: boolean;
+  toggleLoop: () => void;
+  error?: string | null;
 }
 
 export interface AudioPlayerProps {

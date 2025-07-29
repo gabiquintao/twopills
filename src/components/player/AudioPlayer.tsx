@@ -6,6 +6,7 @@ import SeekBar from './SeekBar';
 import TrackInfo from './TrackInfo';
 import PlayButton from './PlayButton';
 import VolumeControl from './VolumeControl';
+import LoopButton from './LoopButton';
 
 const AudioPlayer = ({ className = '', track }: AudioPlayerProps) => {
   const {
@@ -13,6 +14,8 @@ const AudioPlayer = ({ className = '', track }: AudioPlayerProps) => {
     play,
     pause,
     volume,
+    toggleLoop,
+    isLooping,
     currentVolume,
     currentSeek,
     duration,
@@ -62,6 +65,7 @@ const AudioPlayer = ({ className = '', track }: AudioPlayerProps) => {
 
           <div className="flex items-center space-x-4">
             <PlayButton isPlaying={isPlaying} onTogglePlay={togglePlay} />
+            <LoopButton onToogleLoop={toggleLoop} isLooping={isLooping} />
           </div>
 
           <div className="flex items-center space-x-4 flex-1 justify-end">
