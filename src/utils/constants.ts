@@ -4,6 +4,7 @@ export const NAVIGATION_LINKS: NavigationLink[] = [
   { href: '/', label: 'Home' },
   { href: '/artists', label: 'Artists' },
   { href: '/tracks', label: 'Tracks' },
+  { href: '/playlists', label: 'Playlists' },
 ];
 
 export const AUDIO_CONFIG = {
