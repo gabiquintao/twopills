@@ -1,4 +1,4 @@
-import type { Artist, Album, Track } from '@/types/audio';
+import type { Artist, Album, Track, Playlist } from '@/types/audio';
 
 export const mockArtists: Artist[] = [
   {
@@ -75,5 +75,22 @@ export const mockTracks: Track[] = [
     src: '/Snakes.mp3',
     releaseDate: new Date('2019-01-01'),
     duration: 198,
+  },
+];
+
+export const mockPlaylists: Playlist[] = [
+  {
+    id: '1',
+    tracks: [mockTracks[0], mockTracks[1], mockTracks[2]],
+    img: null,
+    name: 'p1',
+    creationDate: new Date('2025-08-01'),
+  },
+  {
+    id: '2',
+    tracks: [mockTracks[0], mockTracks[1]],
+    img: null,
+    name: 'p2',
+    creationDate: new Date('2025-09-01'),
   },
 ];
