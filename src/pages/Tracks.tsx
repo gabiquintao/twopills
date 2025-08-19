@@ -14,13 +14,19 @@ import type { Track } from '@/types/audio';
 
 type ViewMode = 'list' | 'compact' | 'grid';
 
-const Tracks = () => {
+type TracksProps = {
+  initialTracks?: Track[];
+};
+
+const Tracks = ({ initialTracks }: TracksProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const { currentTrack, isPlaying, isLoading, play, pause } = useSongStore();
 
-  const filteredTracks = mockTracks.filter(
+  const allTracks = initialTracks ?? mockTracks;
+
+  const filteredTracks = allTracks.filter(
     (track) =>
       track.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       track.artist.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
